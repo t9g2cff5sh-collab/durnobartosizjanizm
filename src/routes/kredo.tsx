@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CredoBox } from "@/components/credo-box";
 import { SiteHeader } from "@/components/site-header";
+import { Button } from "@/components/ui/button";
 import { getCredos } from "@/lib/domain";
 import { CREDO_LINE } from "@/lib/world";
 
@@ -57,6 +58,9 @@ function CredoPage() {
             ))
           )}
         </ul>
+        <Button asChild size="sm" className="mt-6">
+          <Link to="/slawa">Zobacz galerię lojalnych</Link>
+        </Button>
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { authMiddleware } from "@/lib/auth/middleware";
 import { requirePaid } from "@/lib/dues";
-import { CHANNELS, HOST_NAME, PIERWOKUP_KINDS, SURPRISE_CARDS, type PierwokupKind } from "@/lib/world";
+import { CHANNELS, HOST_NAME, PIERWOKUP_KINDS, SURPRISE_CARDS, TABLE_HOST_NAME, isBoziaName, isMonitorName, type PierwokupKind } from "@/lib/world";
 
 
 export type DayItem = {
@@ -69,6 +69,11 @@ export type HostSeat = {
   isHost: boolean;
 };
 
+export type TableSeat = {
+  name: string;
+  isTableHost: boolean;
+};
+
 function asIso(value: string | Date): string {
   if (value instanceof Date) return value.toISOString();
   const parsed = new Date(value);
@@ -91,7 +96,7 @@ async function nameOf(sql: Sql, userId: string) {
 }
 
 function namedMonitor(name: string | null | undefined) {
-  return (name ?? "").trim().toLowerCase() === HOST_NAME.toLowerCase();
+  return isMonitorName(name);
 }
 
 export async function isHost(sql: Sql, userId: string) {
@@ -103,6 +108,30 @@ export async function isHost(sql: Sql, userId: string) {
     select name from "user" where id = ${userId}
   `;
   if (namedMonitor(user?.name)) return true;
+  const [seated] = await sql<{ n: number }>`
+    select count(*)::int as n from profiles
+    where lower(btrim(display_name)) = lower(${HOST_NAME})
+  `;
+  if (Number(seated?.n ?? 0) > 0) return false;
+  const [claim] = await sql<{ founder_user_id: string }>`
+    select founder_user_id from domain_claim where id = 1
+  `;
+  return claim?.founder_user_id === userId;
+}
+
+export async function isTableHost(sql: Sql, userId: string) {
+  const [profile] = await sql<{ display_name: string }>`
+    select display_name from profiles where user_id = ${userId}
+  `;
+  if (isBoziaName(profile?.display_name)) return true;
+  const [user] = await sql<{ name: string }>`
+    select name from "user" where id = ${userId}
+  `;
+  if (isBoziaName(user?.name)) return true;
+  const names = await sql<{ display_name: string }>`
+    select display_name from profiles
+  `;
+  if (names.some((row) => isBoziaName(row.display_name))) return false;
   const [claim] = await sql<{ founder_user_id: string }>`
     select founder_user_id from domain_claim where id = 1
   `;
@@ -112,6 +141,11 @@ export async function isHost(sql: Sql, userId: string) {
 async function requireHost(sql: Sql, userId: string) {
   if (await isHost(sql, userId)) return;
   forbid(`Tylko ${HOST_NAME} wpuszcza i bierze pierwokup.`);
+}
+
+export async function requireTableHost(sql: Sql, userId: string) {
+  if (await isTableHost(sql, userId)) return;
+  forbid(`Tylko ${TABLE_HOST_NAME} pieczętuje stół.`);
 }
 
 
@@ -131,6 +165,12 @@ export function concretize(sentence: string): string {
   if (/kredo|credo|wyznan/.test(s)) {
     return "Każdy należący posiada własne kredo. Cudze nie obowiązuje.";
   }
+  if (/bozi|bozie|stoł|księg/.test(s)) {
+    return `${TABLE_HOST_NAME} pieczętuje stół. Podpis czeka. Herbata parzy się sama.`;
+  }
+  if (/hurtem|nierazem/.test(s)) {
+    return "Nie hurtem. Jedne drzwi, jedna osoba. Monitor wpuszcza. Bozia sadza.";
+  }
 
   if (/pienią|kas[ayę]|przelew|blik|złot/.test(s)) {
     return "Zero kasy przy gościach. Składka jest w świecie, nie przy drzwiach.";
@@ -140,9 +180,6 @@ export function concretize(sentence: string): string {
   }
   if (/ociosow|domofon|puk|dzwon/.test(s)) {
     return "Ociosowa 44/14. Domofon martwy = pukaj. Nierazem.";
-  }
-  if (/nierazem|hurtem/.test(s)) {
-    return "Osobno. Jedne drzwi, jedna osoba. Mapa stoi.";
   }
   if (/\?/.test(t)) {
     return "Pytanie przyjęte. Odpowiedź: spójrz w kodeks, potem jeden krok.";
@@ -267,6 +304,12 @@ export const addGuest = createServerFn({ method: "POST" })
     const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     await requirePaid(sql, context.userId);
+    const [waiting] = await sql<{ n: number }>`
+      select count(*)::int as n from guests where status = 'czeka'
+    `;
+    if (Number(waiting?.n ?? 0) > 0) {
+      throw new Error("Ktoś już stoi przy progu. Nierazem. Monitor najpierw kiwnie.");
+    }
     await sql`
       insert into guests (user_id, nick, channel, status)
       values (${context.userId}, ${data.nick}, ${data.channel}, 'czeka')
@@ -571,6 +614,28 @@ export const getHostPower = createServerFn({ method: "GET" })
     const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     return { name: HOST_NAME, isHost: await isHost(sql, context.userId) };
+  });
+
+export const getTableSeat = createServerFn({ method: "GET" }).handler(
+  async (): Promise<{ name: string; title: string }> => {
+    const { getSql } = await import("@/lib/db");
+    const sql = await getSql();
+    const [row] = await sql<{ name: string }>`
+      select name from table_seat where id = 1
+    `;
+    return { name: row?.name || TABLE_HOST_NAME, title: "Pieczęć stołu" };
+  },
+);
+
+export const getTablePower = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .handler(async ({ context }): Promise<TableSeat> => {
+    const { getSql } = await import("@/lib/db");
+    const sql = await getSql();
+    return {
+      name: TABLE_HOST_NAME,
+      isTableHost: await isTableHost(sql, context.userId),
+    };
   });
 
 function asKind(value: string | undefined): PierwokupKind {

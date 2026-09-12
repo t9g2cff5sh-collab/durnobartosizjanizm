@@ -26,7 +26,7 @@ import {
 } from "@/lib/choir";
 import { getDuesStatus } from "@/lib/dues";
 import { useResolvedAuth } from "@/lib/use-resolved-auth";
-import { CHANNELS, HOST_LINE, HOST_NAME, PIERWOKUP_KINDS, TONES, type PierwokupKind } from "@/lib/world";
+import { CHANNELS, HOST_LINE, HOST_NAME, HURTEM_LINE, PIERWOKUP_KINDS, TABLE_HOST_NAME, TABLE_LINE, TONES, type PierwokupKind } from "@/lib/world";
 
 export const Route = createFileRoute("/zbor")({
   loader: async () => {
@@ -111,14 +111,32 @@ function ZborPage() {
             M
           </div>
           <div>
-            <p className="font-mono text-xs tracking-[0.18em] text-subtle">Pieczęć progu</p>
+            <p className="font-mono text-xs tracking-[0.18em] text-subtle">
+              Zabezpieczenie od Monitora
+            </p>
             <h2 className="mt-1 font-display text-2xl tracking-tight">
               Hostem zostaje {hostName}
             </h2>
             <p className="mt-2 text-sm text-muted">{HOST_LINE}</p>
-            <p className="mt-2 text-xs text-subtle">
-              Prorok trzyma klucz, dopóki ktoś nie siądzie pod imieniem Monitor.
+            <p className="mt-2 text-xs text-subtle">{HURTEM_LINE}</p>
+          </div>
+        </article>
+
+        <article className="mt-3 flex gap-4 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]">
+          <div className="grid size-12 shrink-0 place-items-center rounded-full border border-border font-display text-xl">
+            Ż
+          </div>
+          <div>
+            <p className="font-mono text-xs tracking-[0.18em] text-subtle">
+              Zabezpieczenie od Bozi
             </p>
+            <h2 className="mt-1 font-display text-2xl tracking-tight">
+              {TABLE_HOST_NAME} pieczętuje stół
+            </h2>
+            <p className="mt-2 text-sm text-muted">{TABLE_LINE}</p>
+            <Button asChild size="sm" variant="ghost" className="mt-3">
+              <Link to="/ksiega">Księga pod pieczęcią</Link>
+            </Button>
           </div>
         </article>
 
@@ -162,7 +180,7 @@ function ZborPage() {
 
         <h2 className="mt-12 font-display text-2xl tracking-tight">Lista gości</h2>
         <p className="mt-1 text-sm text-muted">
-          Nick → kanał → status. Bez maili znikąd. Wpuszcza tylko {hostName}.
+          Nick → kanał → status. Bez maili znikąd. Wpuszcza tylko {hostName}. Przy progu stoi jedna osoba.
         </p>
         {canPost ? <GuestForm /> : null}
         <ul className="mt-4 divide-y divide-border rounded-xl bg-surface shadow-[var(--shadow-border)]">
@@ -292,7 +310,11 @@ function GuestForm() {
     mutationFn: () => addGuest({ data: { nick, channel } }),
     onSuccess: () => {
       setNick("");
-      toast.success("Na liście. Czeka na Monitora.");
+      toast.success(
+        channel === "meet"
+          ? "Meet sam nie otwiera. Czeka na Monitora."
+          : "Na liście. Czeka na Monitora.",
+      );
       void queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err: Error) => toast.error(err.message),

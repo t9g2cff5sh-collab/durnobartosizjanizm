@@ -3,7 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Paywall } from "@/components/paywall";
+import { BoardShell } from "@/components/board-shell";
 import { SiteHeader } from "@/components/site-header";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,7 +25,8 @@ import { getDomainSnapshot } from "@/lib/domain";
 import { formatPieniazki, getDuesStatus } from "@/lib/dues";
 import { useResolvedAuth } from "@/lib/use-resolved-auth";
 import { formatPlDate } from "@/lib/utils";
-import { CO_CREATOR } from "@/lib/world";
+
+
 
 export const Route = createFileRoute("/budzet")({
   loader: () => getBudget(),
@@ -59,21 +62,9 @@ function BudzetPage() {
   return (
     <div className="min-h-dvh">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-5 pb-20 md:px-10">
-        <p className="font-mono text-xs tracking-[0.18em] text-subtle">
-          {CO_CREATOR.name} · wspólna kasa
-        </p>
-        <h1 className="mt-2 font-display text-4xl tracking-tight md:text-5xl">
-          Budżet świata
-        </h1>
-        <p className="mt-3 max-w-xl text-muted">
-          Wspólny budżet schodzi na kartę konta firmowego. Z każdego dobrze
-          zrealizowanego projektu {TITHE_PERCENT}% idzie na cel, który wybieracie
-          razem.
-        </p>
-
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]">
+      <BoardShell current="/budzet">
+        <div className="board-wall grid sm:grid-cols-2 sm:divide-x sm:divide-border">
+          <div className="border-b border-border p-5 sm:border-b-0 md:p-6">
             <p className="font-mono text-xs tracking-[0.18em] text-subtle">
               {snap?.firmLabel ?? "Konto firmowe"}
             </p>
@@ -88,7 +79,7 @@ function BudzetPage() {
                 : "IBAN ustawia prorok w kurii."}
             </p>
           </div>
-          <div className="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]">
+          <div className="p-5 md:p-6">
             <p className="font-mono text-xs tracking-[0.18em] text-subtle">
               {TITHE_PERCENT}% na cel
             </p>
@@ -180,7 +171,7 @@ function BudzetPage() {
             </ul>
           </section>
         </div>
-      </main>
+      </BoardShell>
     </div>
   );
 }

@@ -3,13 +3,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MapPin, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Paywall } from "@/components/paywall";
+import { BoardShell } from "@/components/board-shell";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getDomainSnapshot } from "@/lib/domain";
 import { getDuesStatus } from "@/lib/dues";
-import { Paywall } from "@/components/paywall";
 import {
   NOTICE_KINDS,
   addNotice,
@@ -21,7 +22,6 @@ import {
 } from "@/lib/life";
 import { useResolvedAuth } from "@/lib/use-resolved-auth";
 import { appleMapsUrl, formatPlDate } from "@/lib/utils";
-import { CO_CREATOR } from "@/lib/world";
 
 export const Route = createFileRoute("/tablica")({
   loader: () => getNotices(),
@@ -53,18 +53,7 @@ function TablicaPage() {
   return (
     <div className="min-h-dvh">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-5 pb-20 md:px-10">
-        <p className="font-mono text-xs tracking-[0.18em] text-subtle">
-          Tablica informacyjna
-        </p>
-        <h1 className="mt-2 font-display text-4xl tracking-tight md:text-5xl">
-          Wyjazdy i zaproszenia
-        </h1>
-        <p className="mt-3 max-w-xl text-muted">
-          {CO_CREATOR.name}, {CO_CREATOR.title}: tu wisi to, co się dzieje w
-          świecie. Dokąd jedziemy, kogo wołamy. Wpis można później poprawić.
-        </p>
-
+      <BoardShell current="/tablica">
         {isSignedIn ? (
           canPost ? (
             <NoticeComposer />
@@ -72,7 +61,7 @@ function TablicaPage() {
             <Paywall action="powiesić ogłoszenie" />
           )
         ) : (
-          <p className="mt-6 text-sm text-muted">
+          <p className="text-sm text-muted">
             <Link to="/login" className="underline underline-offset-4">
               Wejdź
             </Link>
@@ -82,12 +71,12 @@ function TablicaPage() {
 
         <div className="mt-10 grid gap-8 md:grid-cols-2">
           {NOTICE_KINDS.map((kind) => (
-            <section key={kind.id}>
+            <section key={kind.id} className="board-wall p-5 md:p-6">
               <h2 className="font-display text-2xl tracking-tight">{kind.label}</h2>
               <p className="text-sm text-subtle">{kind.hint}</p>
               <ul className="mt-4 space-y-3">
                 {notices.filter((n) => n.kind === kind.id).length === 0 ? (
-                  <li className="rounded-xl bg-surface px-4 py-8 text-sm text-subtle shadow-[var(--shadow-border)]">
+                  <li className="rounded-lg bg-surface-2 px-4 py-8 text-sm text-subtle">
                     Pusto
                   </li>
                 ) : (
@@ -105,7 +94,7 @@ function TablicaPage() {
             </section>
           ))}
         </div>
-      </main>
+      </BoardShell>
     </div>
   );
 }
@@ -134,7 +123,7 @@ function NoticeComposer() {
 
   return (
     <form
-      className="mt-6 space-y-3 rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]"
+      className="space-y-3 rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]"
       onSubmit={(e) => {
         e.preventDefault();
         add.mutate();
@@ -225,7 +214,7 @@ function NoticeCard({
 
   if (editing) {
     return (
-      <li className="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]">
+      <li className="rounded-lg bg-surface-2 p-4">
         <form
           className="space-y-3"
           onSubmit={(e) => {
@@ -286,7 +275,7 @@ function NoticeCard({
   }
 
   return (
-    <li className="rounded-xl bg-surface p-4 shadow-[var(--shadow-border)]">
+    <li className="rounded-lg bg-surface-2 p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="font-display text-xl tracking-tight">{notice.title}</h3>

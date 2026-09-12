@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { UserButton } from "@/lib/auth/gates";
 import { useQuery } from "@tanstack/react-query";
 import { getDomainSnapshot } from "@/lib/domain";
@@ -6,27 +6,18 @@ import { getDuesStatus } from "@/lib/dues";
 import { useResolvedAuth } from "@/lib/use-resolved-auth";
 import { SealMark } from "@/components/seal-mark";
 import { Button } from "@/components/ui/button";
+import { BOARDS } from "@/lib/world";
 
-const NAV = [
-  { to: "/tablica", label: "Tablica" },
+const MORE = [
   { to: "/kawalki", label: "Kawałki" },
   { to: "/ksiega", label: "Księga" },
-  { to: "/tot", label: "ToT" },
-  { to: "/budzet", label: "Budżet" },
   { to: "/kodeks", label: "Kodeks" },
-  { to: "/kredo", label: "Kredo" },
-
-  { to: "/mapa", label: "Mapa" },
-  { to: "/kronika", label: "Kronika" },
-  { to: "/rozumie", label: "Rozumie" },
   { to: "/zbor", label: "Zbór" },
-  { to: "/sztab", label: "Sztab" },
-  { to: "/slawa", label: "Sława" },
 ] as const;
-
 
 export function SiteHeader() {
   const { user, isSignedIn } = useResolvedAuth();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const domain = useQuery({
     queryKey: ["domain"],
     queryFn: () => getDomainSnapshot(),
@@ -50,7 +41,7 @@ export function SiteHeader() {
               DurnoBartosizjanizm
             </span>
             <span className="mt-1 font-mono text-xs tracking-[0.18em] text-subtle">
-              .world
+              tablica domu
             </span>
           </span>
         </Link>
@@ -80,11 +71,37 @@ export function SiteHeader() {
           </Button>
         )}
       </div>
-      <nav className="mt-3 flex flex-wrap gap-1">
-        {NAV.map((item) => (
-          <Button key={item.to} asChild variant="ghost" size="sm">
-            <Link to={item.to}>{item.label}</Link>
-          </Button>
+      <nav
+        aria-label="Tablice domu"
+        className="mt-4 grid grid-cols-3 gap-1 rounded-lg bg-surface p-1 shadow-[var(--shadow-border)]"
+      >
+        {BOARDS.map((item) => {
+          const active = pathname === item.to;
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              aria-current={active ? "page" : undefined}
+              className={
+                active
+                  ? "grid min-h-11 place-items-center rounded-md bg-accent px-2 text-center font-mono text-[11px] tracking-[0.14em] text-accent-fg sm:text-xs"
+                  : "grid min-h-11 place-items-center rounded-md px-2 text-center font-mono text-[11px] tracking-[0.14em] text-subtle hover:text-fg sm:text-xs"
+              }
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <nav className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+        {MORE.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className="min-h-11 inline-flex items-center font-mono text-xs tracking-[0.14em] text-subtle hover:text-fg"
+          >
+            {item.label}
+          </Link>
         ))}
       </nav>
     </header>

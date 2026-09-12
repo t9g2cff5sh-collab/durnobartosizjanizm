@@ -20,7 +20,8 @@ export function MembershipSync() {
 
   useEffect(() => {
     if (!user) return;
-    sync.mutate(user.displayName?.trim() || "Bartosz");
+    sync.mutate(user.displayName?.trim() || "Wyznawca");
+
     // eslint-disable-next-line react-hooks/exhaustive-deps -- sync once per identity
   }, [user?.id]);
 

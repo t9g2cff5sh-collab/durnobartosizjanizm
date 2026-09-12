@@ -226,11 +226,12 @@ export function ensureDbReady(): Promise<void> {
 
 // Re-run migrate when this module hot-reloads so new migrations/*.sql apply.
 // 0009_edit_posts.sql: edycja wpisów (tablica, tot, kawałki).
+// 0013_locks.sql: pieczęć Monitora (próg, nie hurtem) + pieczęć Bozi (księga).
 
 
 // Server-only eager start: kick PGLite bootstrap as soon as this module loads in
 // Node. Client bundles never hit this path (`getSql` throws in the browser).
-// Choir tables: migrations/0010_choir.sql + 0011_host_pierwokup.sql + 0012_credo.sql
+// Choir tables: migrations/0010_choir.sql + 0011_host_pierwokup.sql + 0012_credo.sql + 0013_locks.sql
 
 
 const globalBoot = globalThis as typeof globalThis & {

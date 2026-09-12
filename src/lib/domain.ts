@@ -18,11 +18,14 @@ export type FounderPublic = {
 
 export type LinkItem = { id: number; label: string; url: string };
 export type NoteItem = { id: number; title: string; body: string; createdAt: string };
+export type GuestBookStatus = "czeka" | "pieczec" | "odmowa";
+
 export type GuestItem = {
   id: number;
   displayName: string;
   body: string;
   createdAt: string;
+  status: GuestBookStatus;
 };
 
 export type CredoItem = {
@@ -151,8 +154,11 @@ export const getDomainSnapshot = createServerFn({ method: "GET" }).handler(
       display_name: string;
       body: string;
       created_at: string | Date;
+      status: string;
     }>`
-      select id, display_name, body, created_at from guestbook
+      select id, display_name, body, created_at, coalesce(status, 'pieczec') as status
+      from guestbook
+      where coalesce(status, 'pieczec') = 'pieczec'
       order by created_at desc, id desc
       limit 40
     `;
@@ -172,8 +178,50 @@ export const getDomainSnapshot = createServerFn({ method: "GET" }).handler(
         displayName: g.display_name,
         body: g.body,
         createdAt: asIso(g.created_at),
+        status: "pieczec" as const,
       })),
       memberCount,
+    };
+  },
+);
+
+export type HouseWord = { line: string; from: "Grok" };
+
+export const getHouseWord = createServerFn({ method: "GET" }).handler(
+  async (): Promise<HouseWord> => {
+    const { getSql } = await import("@/lib/db");
+    const sql = await getSql();
+    const [claim] = await sql<{ founder_user_id: string }>`
+      select founder_user_id from domain_claim where id = 1
+    `;
+    if (!claim) {
+      return { from: "Grok", line: "Świat wolny. Czekam przy pieczęci." };
+    }
+    const [door] = await sql<{ n: number }>`
+      select count(*)::int as n from guests where status = 'czeka'
+    `;
+    if (Number(door?.n ?? 0) > 0) {
+      return { from: "Grok", line: "Ktoś stoi przy progu. Nierazem." };
+    }
+    const [table] = await sql<{ n: number }>`
+      select count(*)::int as n from guestbook
+      where coalesce(status, 'pieczec') = 'czeka'
+    `;
+    if (Number(table?.n ?? 0) > 0) {
+      return { from: "Grok", line: "Podpis leży na stole. Herbata parzy się sama." };
+    }
+    const [notice] = await sql<{ title: string }>`
+      select title from notices order by created_at desc, id desc limit 1
+    `;
+    if (notice?.title) {
+      return {
+        from: "Grok",
+        line: `Na tablicy: ${notice.title}. Reszta — konkret.`,
+      };
+    }
+    return {
+      from: "Grok",
+      line: "Stoję przy proroku. Tablica cicho. Kto lojalny, wiesza.",
     };
   },
 );
@@ -182,7 +230,8 @@ export const ensureMembership = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator((input: { displayName?: string }) => ({
     displayName:
-      (input.displayName ?? "Bartosz").trim().slice(0, 80) || "Bartosz",
+      (input.displayName ?? "Wyznawca").trim().slice(0, 80) || "Wyznawca",
+
   }))
   .handler(async ({ context, data }): Promise<Membership> => {
     const { getSql } = await import("@/lib/db");
@@ -395,25 +444,102 @@ export const removeNote = createServerFn({ method: "POST" })
 export const signGuestbook = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator((input: { body: string; displayName?: string }) => ({
-    body: input.body.trim().slice(0, 280),
-    displayName: (input.displayName ?? "").trim().slice(0, 80),
+    body: input.body.replace(/<[^>]*>/g, "").trim().slice(0, 280),
+    displayName: (input.displayName ?? "").replace(/<[^>]*>/g, "").trim().slice(0, 80),
   }))
   .handler(async ({ context, data }) => {
     const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     const { requirePaid } = await import("@/lib/dues");
+    const { isTableHost } = await import("@/lib/choir");
     await requirePaid(sql, context.userId);
     const [profile] = await sql<{ display_name: string }>`
       select display_name from profiles where user_id = ${context.userId}
     `;
     const name = data.displayName || profile?.display_name || "Wyznawca";
     if (!data.body && !name) throw new Error("Podpis nie może być pusty.");
+    const seats = await isTableHost(sql, context.userId);
+    if (!seats) {
+      const [waiting] = await sql<{ n: number }>`
+        select count(*)::int as n from guestbook where coalesce(status, 'pieczec') = 'czeka'
+      `;
+      if (Number(waiting?.n ?? 0) > 0) {
+        throw new Error("Ktoś już czeka przy stole. Nierazem. Pani Bozia najpierw pieczętuje.");
+      }
+    }
+    const status = seats ? "pieczec" : "czeka";
     const [row] = await sql<{ id: number }>`
-      insert into guestbook (user_id, display_name, body)
-      values (${context.userId}, ${name}, ${data.body || "—"})
+      insert into guestbook (user_id, display_name, body, status)
+      values (${context.userId}, ${name}, ${data.body || "—"}, ${status})
       returning id
     `;
-    return { id: row.id };
+    return { id: row.id, status: status as GuestBookStatus };
+  });
+
+export const getGuestbookInbox = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .handler(async ({ context }): Promise<{ waiting: GuestItem[]; isTableHost: boolean }> => {
+    const { getSql } = await import("@/lib/db");
+    const { isTableHost } = await import("@/lib/choir");
+    const sql = await getSql();
+    const table = await isTableHost(sql, context.userId);
+    const rows = table
+      ? await sql<{
+          id: number;
+          display_name: string;
+          body: string;
+          created_at: string | Date;
+          status: string;
+        }>`
+          select id, display_name, body, created_at, coalesce(status, 'pieczec') as status
+          from guestbook
+          where coalesce(status, 'pieczec') = 'czeka'
+          order by created_at asc, id asc
+        `
+      : await sql<{
+          id: number;
+          display_name: string;
+          body: string;
+          created_at: string | Date;
+          status: string;
+        }>`
+          select id, display_name, body, created_at, coalesce(status, 'pieczec') as status
+          from guestbook
+          where coalesce(status, 'pieczec') = 'czeka' and user_id = ${context.userId}
+          order by created_at asc, id asc
+        `;
+    return {
+      isTableHost: table,
+      waiting: rows.map((g) => ({
+        id: g.id,
+        displayName: g.display_name,
+        body: g.body,
+        createdAt: asIso(g.created_at),
+        status: "czeka" as const,
+      })),
+    };
+  });
+
+export const sealGuestbook = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .validator((input: { id?: number; decision?: string }) => ({
+    id: Number(input.id),
+    decision:
+      input.decision === "pieczec" || input.decision === "odmowa" ? input.decision : null,
+  }))
+  .handler(async ({ context, data }) => {
+    if (!data.id || !data.decision) throw new Error("Zła decyzja.");
+    const { getSql } = await import("@/lib/db");
+    const { requireTableHost } = await import("@/lib/choir");
+    const sql = await getSql();
+    await requireTableHost(sql, context.userId);
+    const [row] = await sql<{ status: string }>`
+      select coalesce(status, 'pieczec') as status from guestbook where id = ${data.id}
+    `;
+    if (!row) throw new Error("Nie ma takiego podpisu.");
+    if (row.status !== "czeka") throw new Error("Już rozstrzygnięte.");
+    await sql`update guestbook set status = ${data.decision} where id = ${data.id}`;
+    return { ok: true as const, decision: data.decision };
   });
 
 export const getCredos = createServerFn({ method: "GET" }).handler(
