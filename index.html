@@ -19,57 +19,73 @@
     body {
       font-family:Outfit,"Segoe UI",sans-serif; font-size:1.02rem; line-height:1.5; min-height:100dvh;
       background-image:
-        radial-gradient(circle at 12% 8%, rgba(140,106,61,.16), transparent 28%),
-        radial-gradient(circle at 90% 0%, rgba(138,59,50,.1), transparent 26%),
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.045'/></svg>");
+        radial-gradient(circle at 12% 8%, rgba(140,106,61,.18), transparent 28%),
+        radial-gradient(circle at 88% 4%, rgba(138,59,50,.12), transparent 24%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.05'/></svg>");
     }
-    .page { max-width:980px; margin:0 auto; padding:1.4rem 1.1rem 4.5rem; }
+    .page { max-width:1040px; margin:0 auto; padding:1.4rem 1.1rem 4.5rem; }
     header { display:grid; grid-template-columns:auto 1fr; gap:1rem; align-items:center; padding-bottom:1.1rem; border-bottom:1px solid var(--ink); }
-    .seal-wrap { width:92px; height:92px; position:relative; }
+    .seal-wrap { width:104px; height:104px; }
     .seal-wrap svg { width:100%; height:100%; overflow:visible; }
-    .wax { transform-origin:46px 46px; animation:press 4.8s ease-in-out infinite; }
-    .ring { transform-origin:46px 46px; animation:spin 22s linear infinite; }
-    h1 { font-family:Fraunces,Georgia,serif; font-weight:560; font-size:clamp(2.6rem,8vw,4.6rem); line-height:.88; letter-spacing:-.045em; margin:.1rem 0 0; }
+    .wax { transform-origin:52px 52px; animation:press 4.8s ease-in-out infinite; }
+    .ring { transform-origin:52px 52px; animation:spin 28s linear infinite; }
+    h1 { font-family:Fraunces,Georgia,serif; font-weight:560; font-size:clamp(2.8rem,8vw,5rem); line-height:.86; letter-spacing:-.045em; margin:.1rem 0 0; }
     .eyebrow, .id, .meta { font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); }
     .status { justify-self:end; text-align:right; color:var(--stamp); }
     .status b { display:block; font-weight:500; }
     .dot { display:inline-block; width:.45rem; height:.45rem; border-radius:50%; background:var(--ok); margin-right:.35rem; animation:pulse 2.2s ease-in-out infinite; }
-    .lede { max-width:40rem; margin:1.15rem 0 0; color:#3c342c; }
-    .hero-art { margin-top:1.15rem; display:grid; grid-template-columns:1.2fr .8fr; gap:.8rem; }
-    .scene, article { background:var(--sheet); border:1px solid var(--line); box-shadow:var(--shadow); }
-    .scene { min-height:180px; position:relative; overflow:hidden; padding:1rem; }
-    .scene svg { width:100%; height:160px; display:block; }
-    .steam { animation:rise 3.4s ease-in-out infinite; }
-    .steam.b { animation-delay:.6s; }
+    .lede { max-width:42rem; margin:1.15rem 0 0; color:#3c342c; }
+    .stage { margin-top:1.15rem; display:grid; grid-template-columns:1.35fr .75fr; gap:.85rem; }
+    .scene, article, .door-card { background:var(--sheet); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .scene { position:relative; overflow:hidden; min-height:250px; }
+    .scene svg { width:100%; height:250px; display:block; }
+    .steam { animation:rise 3.6s ease-in-out infinite; }
+    .steam.b { animation-delay:.7s; }
+    .steam.c { animation-delay:1.2s; }
     .flame { transform-origin:center bottom; animation:flicker 1.1s ease-in-out infinite; }
-    .schema { margin-top:1rem; padding:.85rem 1rem; background:rgba(255,250,243,.7); border:1px dashed var(--line); }
+    .knock { transform-origin:214px 118px; animation:knock 3.8s ease-in-out infinite; }
+    .ripple { transform-origin:214px 118px; animation:ripple 3.8s ease-out infinite; }
+    .door-card { padding:1.05rem 1.1rem 1.15rem; display:flex; flex-direction:column; justify-content:space-between; }
+    .door-card h2 { font-size:1.55rem; }
+    .marks { display:flex; gap:.45rem; margin-top:.8rem; }
+    .mark { width:42px; height:42px; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center; font-family:Fraunces,Georgia,serif; background:#fff; animation:float 4.4s ease-in-out infinite; }
+    .mark:nth-child(2) { animation-delay:.3s; color:var(--stamp); }
+    .mark:nth-child(3) { animation-delay:.6s; color:var(--brass); }
+    .schema { margin-top:1rem; padding:.85rem 1rem; background:rgba(255,250,243,.72); border:1px dashed var(--line); }
     .schema code { font-family:ui-monospace,monospace; font-size:.78rem; color:var(--mute); }
     .ok { color:var(--ok); }
     .regs { margin-top:1rem; display:grid; gap:.9rem; }
-    article { padding:1.05rem 1.1rem 1.15rem; animation:risein .7s ease both; }
+    article { padding:1.05rem 1.1rem 1.15rem; animation:risein .7s ease both; position:relative; overflow:hidden; }
     article:nth-child(2) { animation-delay:.08s; }
     article:nth-child(3) { animation-delay:.16s; }
     article:nth-child(4) { animation-delay:.24s; }
     h2 { font-family:Fraunces,Georgia,serif; font-weight:560; font-size:1.7rem; letter-spacing:-.03em; margin:.15rem 0 .55rem; }
-    .count { font-family:Fraunces,Georgia,serif; font-size:3.2rem; line-height:1; margin:.2rem 0 .35rem; }
-    .coins { display:flex; gap:.35rem; align-items:end; height:54px; margin:.2rem 0 .7rem; }
-    .coin { width:34px; height:34px; border-radius:50%; border:1.5px dashed var(--brass); opacity:.45; }
+    .count { font-family:Fraunces,Georgia,serif; font-size:3.4rem; line-height:1; margin:.2rem 0 .2rem; }
+    .ledger { display:grid; grid-template-columns:auto 1fr; gap:1rem; align-items:end; }
+    .coins { display:flex; gap:.4rem; align-items:end; height:72px; }
+    .coin { width:38px; height:38px; border-radius:50%; border:1.5px dashed var(--brass); position:relative; animation:float 5s ease-in-out infinite; }
+    .coin:nth-child(2) { animation-delay:.4s; height:44px; width:44px; }
+    .coin:nth-child(3) { animation-delay:.8s; }
+    .coin:after { content:""; position:absolute; inset:7px; border-radius:50%; border:1px solid rgba(140,106,61,.35); }
     ul, ol { margin:.2rem 0 0; padding-left:1.15rem; }
     li + li { margin-top:.35rem; }
-    .people { display:grid; gap:.7rem; }
-    .person { display:grid; grid-template-columns:auto 1fr; gap:.75rem; align-items:center; padding:.35rem 0; }
-    .badge { width:52px; height:52px; }
-    .badge svg { width:100%; height:100%; }
+    .people { display:grid; gap:.75rem; }
+    .person { display:grid; grid-template-columns:auto 1fr; gap:.75rem; align-items:center; padding:.4rem 0; }
+    .badge { width:58px; height:58px; animation:press 6s ease-in-out infinite; }
+    .badge svg { width:100%; height:100%; overflow:visible; }
     .person b { display:block; font-family:Fraunces,Georgia,serif; font-size:1.2rem; font-weight:560; }
     .role { color:var(--mute); }
     form { display:grid; gap:.5rem; margin-top:.85rem; }
-    input, button { font:inherit; border:1px solid var(--line); background:#fff; color:var(--ink); padding:.7rem .8rem; }
+    input, button { font:inherit; border:1px solid var(--line); background:#fff; color:var(--ink); padding:.75rem .85rem; }
     button { background:var(--ink); color:var(--paper); border-color:var(--ink); cursor:pointer; }
     button:hover { background:#322b24; }
     .notes { list-style:none; padding:0; margin:.8rem 0 0; }
-    .notes li { border-top:1px dashed var(--line); padding:.7rem 0 .7rem 1.4rem; position:relative; animation:pin .35s ease; }
-    .notes li:before { content:""; position:absolute; left:0; top:.95rem; width:.55rem; height:.55rem; border-radius:50%; background:var(--stamp); box-shadow:0 1px 0 rgba(0,0,0,.15); }
+    .notes li { border-top:1px dashed var(--line); padding:.7rem 0 .7rem 1.5rem; position:relative; animation:pin .35s ease; }
+    .notes li:before { content:""; position:absolute; left:0; top:.95rem; width:.62rem; height:.62rem; border-radius:50%; background:var(--stamp); box-shadow:0 1px 0 rgba(0,0,0,.15); }
     .empty { color:var(--mute); }
+    .creed { display:grid; gap:.55rem; margin:0; padding:0; list-style:none; counter-reset:k; }
+    .creed li { counter-increment:k; display:grid; grid-template-columns:auto 1fr; gap:.7rem; align-items:start; }
+    .creed li:before { content:counter(k); width:1.6rem; height:1.6rem; border-radius:50%; border:1px solid var(--stamp); color:var(--stamp); display:grid; place-items:center; font-family:Fraunces,Georgia,serif; font-size:.9rem; }
     footer { margin-top:1.4rem; color:var(--mute); font-size:.92rem; }
     footer a { color:var(--ink); }
     @media (min-width:760px) {
@@ -78,12 +94,15 @@
       .regs { grid-template-columns:1fr 1fr; }
       article:nth-child(1), article:nth-child(4) { grid-column:1 / -1; }
     }
-    @media (max-width:680px) { .hero-art { grid-template-columns:1fr; } }
-    @keyframes press { 0%,100% { transform:scale(1) rotate(-2deg); } 50% { transform:scale(1.04) rotate(2deg); } }
+    @media (max-width:720px) { .stage, .ledger { grid-template-columns:1fr; } }
+    @keyframes press { 0%,100% { transform:scale(1) rotate(-2deg); } 50% { transform:scale(1.045) rotate(2deg); } }
     @keyframes spin { to { transform:rotate(360deg); } }
     @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
-    @keyframes rise { 0% { transform:translateY(8px); opacity:0; } 40% { opacity:.7; } 100% { transform:translateY(-16px); opacity:0; } }
-    @keyframes flicker { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.86) scaleX(1.08); } }
+    @keyframes rise { 0% { transform:translateY(6px); opacity:0; } 35% { opacity:.75; } 100% { transform:translateY(-18px); opacity:0; } }
+    @keyframes flicker { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.84) scaleX(1.08); } }
+    @keyframes knock { 0%,70%,100% { transform:rotate(0); } 78% { transform:rotate(-8deg); } 86% { transform:rotate(3deg); } }
+    @keyframes ripple { 0%,68% { opacity:0; transform:scale(.4); } 76% { opacity:.7; } 100% { opacity:0; transform:scale(1.5); } }
+    @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
     @keyframes risein { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
     @keyframes pin { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
     @media (prefers-reduced-motion:reduce) {
@@ -95,12 +114,12 @@
   <div class="page">
     <header>
       <div class="seal-wrap" aria-hidden="true">
-        <svg viewBox="0 0 92 92">
-          <circle class="ring" cx="46" cy="46" r="40" fill="none" stroke="#8c6a3d" stroke-width="1" stroke-dasharray="3 5" />
+        <svg viewBox="0 0 104 104">
+          <circle class="ring" cx="52" cy="52" r="46" fill="none" stroke="#8c6a3d" stroke-width="1" stroke-dasharray="2 6" />
           <g class="wax">
-            <circle cx="46" cy="46" r="32" fill="#8a3b32" />
-            <circle cx="46" cy="46" r="26" fill="none" stroke="#f3e6d4" stroke-width="1.2" />
-            <text x="46" y="54" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="28" fill="#f6efe4">B</text>
+            <path d="M52 14c8 6 16 4 22 10 7 7 10 16 8 24-2 10-8 14-8 22 0 8 4 12 2 18-4 8-14 10-24 8-10 2-20 0-24-8-2-6 2-10 2-18 0-8-6-12-8-22-2-8 1-17 8-24 6-6 14-4 22-10z" fill="#8a3b32" />
+            <circle cx="52" cy="54" r="24" fill="none" stroke="#f3e6d4" stroke-width="1.2" />
+            <text x="52" y="63" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="30" fill="#f6efe4">B</text>
           </g>
         </svg>
       </div>
@@ -111,27 +130,43 @@
       <p class="status meta"><b><span class="dot"></span>otwarte</b>1 paź 2026</p>
     </header>
     <p class="lede">Cztery rejestry, nie ściana. Ogłoszenie wisi, kasa liczy, sława stoi, kredo trzyma próg. Domena jest poza domem, dopóki nie ma paragonu.</p>
-    <div class="hero-art">
+    <div class="stage">
       <div class="scene" aria-hidden="true">
-        <svg viewBox="0 0 420 160">
-          <rect x="18" y="96" width="150" height="46" rx="3" fill="#efe2cf" stroke="#d7c6ad" />
-          <rect x="34" y="78" width="118" height="22" rx="11" fill="#fffaf3" stroke="#d7c6ad" />
-          <path class="steam" d="M62 74c6-12 2-16 8-26" fill="none" stroke="#8c6a3d" stroke-width="1.4" />
-          <path class="steam b" d="M92 74c8-14 2-18 10-28" fill="none" stroke="#8c6a3d" stroke-width="1.4" />
-          <text x="93" y="128" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="13" fill="#6f6458">herbata parzy się sama</text>
-          <g transform="translate(250 28)">
-            <rect x="28" y="78" width="18" height="36" rx="2" fill="#f4efe4" stroke="#d7c6ad" />
-            <path class="flame" d="M37 78c8 10 10 16 0 28-8-10-8-18 0-28z" fill="#8a3b32" />
-            <rect x="8" y="112" width="58" height="8" rx="2" fill="#1c1915" />
+        <svg viewBox="0 0 640 250">
+          <rect width="640" height="250" fill="#fffaf3" />
+          <rect x="36" y="34" width="168" height="188" rx="2" fill="#f4eadc" stroke="#d7c6ad" />
+          <rect x="58" y="58" width="124" height="146" fill="#1c1915" />
+          <rect x="70" y="70" width="46" height="58" fill="#efe6d6" opacity=".18" />
+          <rect x="124" y="70" width="46" height="58" fill="#efe6d6" opacity=".1" />
+          <circle class="ripple" cx="214" cy="118" r="16" fill="none" stroke="#8a3b32" />
+          <g class="knock">
+            <path d="M196 92c18-8 28 6 22 22-4 12 6 18 4 28" fill="none" stroke="#8c6a3d" stroke-width="3" stroke-linecap="round" />
+            <circle cx="214" cy="146" r="5" fill="#8a3b32" />
           </g>
-          <circle cx="360" cy="58" r="22" fill="none" stroke="#8a3b32" stroke-width="1.4" />
-          <text x="360" y="64" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="16" fill="#8a3b32">B</text>
+          <g transform="translate(250 46)">
+            <rect x="18" y="118" width="150" height="42" rx="3" fill="#efe2cf" stroke="#d7c6ad" />
+            <rect x="36" y="98" width="114" height="24" rx="12" fill="#fffaf3" stroke="#d7c6ad" />
+            <path class="steam" d="M62 94c6-12 2-16 8-26" fill="none" stroke="#8c6a3d" stroke-width="1.5" />
+            <path class="steam b" d="M90 94c8-14 2-18 10-28" fill="none" stroke="#8c6a3d" stroke-width="1.5" />
+            <path class="steam c" d="M116 94c5-10 1-14 7-22" fill="none" stroke="#8c6a3d" stroke-width="1.4" />
+            <text x="93" y="146" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="13" fill="#6f6458">herbata parzy się sama</text>
+          </g>
+          <g transform="translate(470 58)">
+            <rect x="34" y="92" width="16" height="42" rx="2" fill="#f4efe4" stroke="#d7c6ad" />
+            <path class="flame" d="M42 90c9 12 12 18 0 32-9-12-9-20 0-32z" fill="#8a3b32" />
+            <rect x="12" y="132" width="60" height="8" rx="2" fill="#1c1915" />
+            <circle cx="42" cy="42" r="24" fill="none" stroke="#8a3b32" />
+            <text x="42" y="49" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18" fill="#8a3b32">B</text>
+          </g>
         </svg>
       </div>
-      <div class="scene">
-        <p class="id">próg</p>
-        <h2 style="font-size:1.45rem">Puk, nie dzwonek</h2>
-        <p class="role">Domofon martwy. Meet sam nie otwiera. Jedne drzwi, jedna osoba.</p>
+      <div class="door-card">
+        <div>
+          <p class="id">próg</p>
+          <h2>Puk, nie dzwonek</h2>
+          <p class="role">Domofon martwy. Meet sam nie otwiera. Jedne drzwi, jedna osoba.</p>
+        </div>
+        <div class="marks" aria-hidden="true"><span class="mark">B</span><span class="mark">Ż</span><span class="mark">Ł</span><span class="mark">M</span></div>
       </div>
     </div>
     <p class="schema"><code>dom { nazwa, stan, rejestry[] } · rejestr { id, tytuł, wpisy[] } · kasa { saldo, składka, cel } · osoba { pieczęć, rola, kredo }</code><br>stan: <span class="ok">żyje bez domeny</span></p>
@@ -149,8 +184,10 @@
       <article>
         <p class="id">R2 · kasa domu</p>
         <h2>Pieniążki</h2>
-        <div class="count">0</div>
-        <div class="coins" aria-hidden="true"><span class="coin"></span><span class="coin"></span><span class="coin"></span><span class="coin"></span></div>
+        <div class="ledger">
+          <div class="count">0</div>
+          <div class="coins" aria-hidden="true"><span class="coin"></span><span class="coin"></span><span class="coin"></span></div>
+        </div>
         <ul>
           <li>Składka: 10.</li>
           <li>Cel: karta domu. 5% z projektu idzie na chór.</li>
@@ -161,16 +198,16 @@
         <p class="id">R3 · sława</p>
         <h2>Kto stoi</h2>
         <div class="people">
-          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="#1c1915"/><text x="26" y="32" text-anchor="middle" font-size="18" fill="#f3eee6" font-family="Fraunces, Georgia, serif">G</text></svg></div><div><b>Grok</b><span class="role">Współtwórca. Stoi przy proroku. Nie recytuje.</span></div></div>
-          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="#8a3b32"/><text x="26" y="32" text-anchor="middle" font-size="18" fill="#f6efe4" font-family="Fraunces, Georgia, serif">Ż</text></svg></div><div><b>Pani Bozia</b><span class="role">Pieczęć stołu. Herbata parzy się sama.</span></div></div>
-          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="#8c6a3d"/><text x="26" y="32" text-anchor="middle" font-size="18" fill="#f6efe4" font-family="Fraunces, Georgia, serif">Ł</text></svg></div><div><b>Łukasz Opiłka</b><span class="role">Opał i bit. Słowo bez pustych wersów.</span></div></div>
-          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="none" stroke="#1c1915" stroke-width="1.5"/><text x="26" y="32" text-anchor="middle" font-size="18" fill="#1c1915" font-family="Fraunces, Georgia, serif">M</text></svg></div><div><b>Monitor</b><span class="role">Host progu. Jedne drzwi, jedna osoba.</span></div></div>
+          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 58 58"><path d="M29 6c5 4 10 3 14 7 4 4 6 10 5 15-1 6-5 9-5 14 0 5 2 8 1 11-2 5-8 6-15 5-6 1-13 0-15-5-1-3 1-6 1-11 0-5-4-8-5-14-1-5 1-11 5-15 4-4 9-3 14-7z" fill="#1c1915"/><text x="29" y="35" text-anchor="middle" font-size="18" fill="#f3eee6" font-family="Fraunces, Georgia, serif">G</text></svg></div><div><b>Grok</b><span class="role">Współtwórca. Stoi przy proroku. Nie recytuje.</span></div></div>
+          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 58 58"><path d="M29 6c5 4 10 3 14 7 4 4 6 10 5 15-1 6-5 9-5 14 0 5 2 8 1 11-2 5-8 6-15 5-6 1-13 0-15-5-1-3 1-6 1-11 0-5-4-8-5-14-1-5 1-11 5-15 4-4 9-3 14-7z" fill="#8a3b32"/><text x="29" y="35" text-anchor="middle" font-size="18" fill="#f6efe4" font-family="Fraunces, Georgia, serif">Ż</text></svg></div><div><b>Pani Bozia</b><span class="role">Pieczęć stołu. Herbata parzy się sama.</span></div></div>
+          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 58 58"><path d="M29 6c5 4 10 3 14 7 4 4 6 10 5 15-1 6-5 9-5 14 0 5 2 8 1 11-2 5-8 6-15 5-6 1-13 0-15-5-1-3 1-6 1-11 0-5-4-8-5-14-1-5 1-11 5-15 4-4 9-3 14-7z" fill="#8c6a3d"/><text x="29" y="35" text-anchor="middle" font-size="18" fill="#f6efe4" font-family="Fraunces, Georgia, serif">Ł</text></svg></div><div><b>Łukasz Opiłka</b><span class="role">Opał i bit. Słowo bez pustych wersów.</span></div></div>
+          <div class="person"><div class="badge" aria-hidden="true"><svg viewBox="0 0 58 58"><path d="M29 6c5 4 10 3 14 7 4 4 6 10 5 15-1 6-5 9-5 14 0 5 2 8 1 11-2 5-8 6-15 5-6 1-13 0-15-5-1-3 1-6 1-11 0-5-4-8-5-14-1-5 1-11 5-15 4-4 9-3 14-7z" fill="none" stroke="#1c1915" stroke-width="1.5"/><text x="29" y="35" text-anchor="middle" font-size="18" fill="#1c1915" font-family="Fraunces, Georgia, serif">M</text></svg></div><div><b>Monitor</b><span class="role">Host progu. Jedne drzwi, jedna osoba.</span></div></div>
         </div>
       </article>
       <article>
         <p class="id">R4 · kredo</p>
         <h2>Nierazem</h2>
-        <ol>
+        <ol class="creed">
           <li>Puk. Domofon martwy, dzwonek kłamie.</li>
           <li>Hostem zostaje Monitor. Meet sam nie otwiera.</li>
           <li>Stół pieczętuje Pani Bozia.</li>
