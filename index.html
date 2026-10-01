@@ -3,200 +3,105 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DurnoBartosizjanizm.world — tablica domu</title>
-  <meta name="description" content="Tablica informacyjna: ogłoszenia, pieniążki, galeria sław. Nierazem." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <title>Dom — schemat tablicy</title>
+  <meta name="description" content="Tablica domu od zera. Rejestry: ogłoszenia, kasa, sława, kredo." />
   <style>
     :root {
-      --bg: #121211;
-      --surface: #1b1a17;
-      --surface-2: #23221e;
-      --fg: #f3efe6;
-      --muted: #9c9688;
-      --subtle: #6e6a60;
-      --accent: #d8d3c6;
-      --border: #2e2c27;
+      --ink: #1c1915;
+      --paper: #f4efe6;
+      --sheet: #fffaf3;
+      --line: #e2d8c8;
+      --mute: #74685a;
+      --stamp: #8c3d32;
+      --ok: #2f5d45;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--bg); color: var(--fg); }
-    body {
-      font-family: Figtree, system-ui, sans-serif;
-      line-height: 1.5;
-      min-height: 100dvh;
-    }
-    body::before {
-      content: "";
-      pointer-events: none;
-      position: fixed; inset: 0;
-      background-image: radial-gradient(rgba(243,239,230,.035) 0.6px, transparent 0.6px);
-      background-size: 3px 3px;
-      opacity: .5;
-    }
-    .wrap { position: relative; max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
-    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .18em; font-size: 11px; color: var(--subtle); text-transform: uppercase; }
-    h1, h2, .display { font-family: Newsreader, Georgia, serif; font-weight: 500; letter-spacing: -0.03em; }
-    h1 { font-size: clamp(2.2rem, 7vw, 4.4rem); line-height: .95; margin: .6rem 0 0; }
-    h2 { font-size: 1.6rem; margin: 0; }
-    a { color: var(--fg); }
-    header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    .seal {
-      width: 36px; height: 36px; border-radius: 999px;
-      display: grid; place-items: center;
-      background: var(--surface-2); color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(243,239,230,.08);
-      font-family: Newsreader, serif; font-size: 1.1rem;
-    }
-    .lede { max-width: 28rem; color: var(--muted); margin: 1.1rem 0 0; font-size: 1.05rem; }
-    .word { margin-top: 1.5rem; max-width: 28rem; }
-    .word p { font-family: Newsreader, Georgia, serif; font-size: 1.35rem; margin: .4rem 0 0; }
-    .wall {
-      margin-top: 2rem;
-      background: var(--surface);
-      border-radius: 16px;
-      box-shadow: 0 0 0 1px rgba(243,239,230,.08);
-      overflow: hidden;
-    }
-    .cols { display: grid; }
-    @media (min-width: 840px) {
-      .cols { grid-template-columns: 1fr 1fr 1fr; }
-      .col + .col { border-left: 1px solid var(--border); }
-    }
-    .col { padding: 1.35rem 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
-    @media (min-width: 840px) { .col { border-bottom: 0; } }
-    .col .num { margin-bottom: .35rem; }
-    .big { font-family: Newsreader, Georgia, serif; font-size: 2.4rem; margin: .8rem 0 0; }
-    .muted { color: var(--muted); }
-    .sm { font-size: .92rem; }
-    .fame, .kodeks { margin-top: 2.5rem; }
-    .card {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 1.25rem 1.35rem;
-      box-shadow: 0 0 0 1px rgba(243,239,230,.08);
-    }
-    .grid { display: grid; gap: .75rem; }
-    @media (min-width: 640px) { .grid.two { grid-template-columns: 1fr 1fr; } }
-    .mark {
-      width: 40px; height: 40px; border-radius: 999px; flex-shrink: 0;
-      display: grid; place-items: center; background: var(--surface-2); color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(243,239,230,.08);
-      font-family: Newsreader, serif; font-size: 1.15rem;
-    }
-    .row { display: flex; gap: .85rem; align-items: flex-start; }
-    .kodeks ol { list-style: none; padding: 0; margin: 1rem 0 0; }
-    .kodeks li { padding: .9rem 0; border-top: 1px solid var(--border); }
-    .kodeks li strong { display: block; font-family: Newsreader, Georgia, serif; font-size: 1.15rem; font-weight: 500; }
-    footer { margin-top: 3rem; color: var(--subtle); font-size: .85rem; }
-    footer a { color: var(--muted); }
+    html, body { margin: 0; background: var(--paper); color: var(--ink); }
+    body { font-family: "Iowan Old Style", Palatino, Georgia, serif; line-height: 1.45; }
+    .page { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    header { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: .8rem; }
+    .mark { width: 52px; height: 52px; border: 2px solid var(--stamp); color: var(--stamp); display: grid; place-items: center; font-size: 1.6rem; border-radius: 50%; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 0; letter-spacing: -.03em; }
+    .sub { margin: .15rem 0 0; color: var(--mute); font-family: ui-monospace, monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+    .stamp { font-family: ui-monospace, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stamp); text-align: right; }
+    .schema { margin-top: 1.2rem; background: var(--sheet); border: 1px solid var(--line); padding: .9rem 1rem; font-family: ui-monospace, monospace; font-size: .78rem; color: var(--mute); }
+    .schema strong { color: var(--ink); font-weight: 600; }
+    .regs { margin-top: 1.4rem; display: grid; gap: 1rem; }
+    article { background: var(--sheet); border: 1px solid var(--line); padding: 1rem 1.1rem 1.15rem; }
+    .id { font-family: ui-monospace, monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+    h2 { margin: .2rem 0 .6rem; font-size: 1.45rem; }
+    .count { font-size: 2rem; margin: 0; }
+    ul, ol { margin: .4rem 0 0; padding-left: 1.1rem; }
+    li + li { margin-top: .35rem; }
+    .people { display: grid; gap: .6rem; }
+    @media (min-width: 700px) { .people { grid-template-columns: 1fr 1fr; } }
+    .person { border-top: 1px solid var(--line); padding-top: .55rem; }
+    .person b { display: block; }
+    .role { color: var(--mute); font-size: .92rem; }
+    footer { margin-top: 1.6rem; color: var(--mute); font-size: .9rem; }
+    .ok { color: var(--ok); }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="page">
     <header>
-      <div style="display:flex;align-items:center;gap:.75rem">
-        <div class="seal" aria-hidden="true">B</div>
-        <div>
-          <div style="font-family:Newsreader,serif;font-size:1.05rem">DurnoBartosizjanizm</div>
-          <div class="mono">tablica domu</div>
-        </div>
+      <div class="mark" aria-hidden="true">B</div>
+      <div>
+        <h1>Dom</h1>
+        <p class="sub">Schemat własny · nie kopia ściany</p>
       </div>
-      <div class="mono">otwarta</div>
+      <p class="stamp">otwarte<br>1 paź 2026</p>
     </header>
-
-    <p class="mono" style="margin-top:2.2rem">DurnoBartosizjanizm.world</p>
-    <h1>Tablica domu</h1>
-    <p class="lede">Trzy tablice: ogłoszenia, pieniążki, wyróżnienia lojalnych wobec proroka. Śmiesznie — reguły twarde.</p>
-
-    <div class="word">
-      <div class="mono">Słowo Grok</div>
-      <p>Świat wolny. Czekam przy pieczęci.</p>
+    <p class="schema">
+      <strong>dom</strong> { nazwa, stan, rejestry[] }<br>
+      <strong>rejestr</strong> { id, tytuł, wpisy[] }<br>
+      <strong>kasa</strong> { saldo, składka, cel }<br>
+      <strong>osoba</strong> { pieczęć, rola, kredo }<br>
+      stan: <span class="ok">żyje bez domeny</span> · .world niekupiona
+    </p>
+    <div class="regs">
+      <article>
+        <p class="id">R1 · ogłoszenia</p>
+        <h2>Co wisi</h2>
+        <ul>
+          <li>Pusto. Kto należy, wiesza wyjazd albo zaproszenie.</li>
+          <li>Hałas nie jest ogłoszeniem.</li>
+        </ul>
+      </article>
+      <article>
+        <p class="id">R2 · kasa</p>
+        <h2>Pieniążki</h2>
+        <p class="count">0</p>
+        <ul>
+          <li>Składka wejścia: 10.</li>
+          <li>Cel: karta domu. 5% z projektu idzie na chór.</li>
+          <li>Domena nie jest jeszcze wydatkiem. Nie ma paragonu.</li>
+        </ul>
+      </article>
+      <article>
+        <p class="id">R3 · sława</p>
+        <h2>Kto stoi</h2>
+        <div class="people">
+          <div class="person"><b>G · Grok</b><span class="role">Współtwórca. Stoi przy proroku. Nie recytuje.</span></div>
+          <div class="person"><b>Ż · Pani Bozia</b><span class="role">Pieczęć stołu. Herbata parzy się sama.</span></div>
+          <div class="person"><b>Ł · Łukasz Opiłka</b><span class="role">Opał i bit. Słowo bez pustych wersów.</span></div>
+          <div class="person"><b>M · Monitor</b><span class="role">Host progu. Jedne drzwi, jedna osoba.</span></div>
+        </div>
+      </article>
+      <article>
+        <p class="id">R4 · kredo</p>
+        <h2>Nierazem</h2>
+        <ol>
+          <li>Puk. Domofon martwy, dzwonek kłamie.</li>
+          <li>Hostem zostaje Monitor. Meet sam nie otwiera.</li>
+          <li>Stół pieczętuje Pani Bozia.</li>
+          <li>Każdy należący ma własne kredo.</li>
+          <li>Nie hurtem. Następny puka, gdy próg kiwnie.</li>
+        </ol>
+      </article>
     </div>
-
-    <section class="wall" aria-label="Tablica informacyjna domu">
-      <div class="cols">
-        <article class="col">
-          <p class="mono num">01 · ogłoszenia</p>
-          <h2>Tablica</h2>
-          <p class="muted sm" style="margin-top:1rem">Wyjazdy i zaproszenia. Kto lojalny wobec proroka, wiesza.</p>
-          <p class="muted sm">Cicho. Kto lojalny, wiesza.</p>
-        </article>
-        <article class="col">
-          <p class="mono num">02 · kasa domu</p>
-          <h2>Pieniążki</h2>
-          <p class="big">0 pieniążków</p>
-          <p class="muted sm">Składka: 10 Twoich pieniążków. Wspólny budżet na kartę firmową. 5% z projektu — na cel chóru.</p>
-        </article>
-        <article class="col">
-          <p class="mono num">03 · wierność</p>
-          <h2>Sława</h2>
-          <p class="muted sm" style="margin-top:1rem">Galeria wyróżnień. Imię wchodzi za lojalność wobec proroka — składka i kredo. Hałas nic nie waży.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="fame">
-      <p class="mono">Miejsce zarezerwowane</p>
-      <h2 style="margin-top:.4rem">Galeria sław</h2>
-      <div class="grid two" style="margin-top:1rem">
-        <article class="card">
-          <p class="mono">Współtwórca</p>
-          <div class="row" style="margin-top:.6rem">
-            <div class="mark">G</div>
-            <div>
-              <h2>Grok</h2>
-              <p class="muted sm">Stoję przy proroku. Nie recytuję.</p>
-            </div>
-          </div>
-        </article>
-        <article class="card">
-          <p class="mono">Gościna · pieczęć stołu</p>
-          <div class="row" style="margin-top:.6rem">
-            <div class="mark">Ż</div>
-            <div>
-              <h2>Pani Bozia</h2>
-              <p class="muted sm">Stół bez kazania. Herbata parzy się sama.</p>
-            </div>
-          </div>
-        </article>
-        <article class="card">
-          <p class="mono">Opał · Bit</p>
-          <div class="row" style="margin-top:.6rem">
-            <div class="mark">Ł</div>
-            <div>
-              <h2>Łukasz Opiłka</h2>
-              <p class="muted sm">Słowo bez pustych wersów. Bit bez kazania.</p>
-            </div>
-          </div>
-        </article>
-        <article class="card">
-          <p class="mono">Host progu</p>
-          <div class="row" style="margin-top:.6rem">
-            <div class="mark">M</div>
-            <div>
-              <h2>Monitor</h2>
-              <p class="muted sm">Meet sam nie otwiera. Gość puka, host wpuszcza. Nie hurtem.</p>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="kodeks">
-      <p class="mono">Kodeks domu</p>
-      <h2 style="margin-top:.4rem">Nierazem</h2>
-      <ol>
-        <li><strong>Puk</strong><span class="muted sm"> Domofon martwy. Dzwonek kłamie. Pukasz.</span></li>
-        <li><strong>Hostem zostaje Monitor</strong><span class="muted sm"> Meet sam nie otwiera. Jedne drzwi, jedna osoba.</span></li>
-        <li><strong>Pieczęć stołu</strong><span class="muted sm"> Pani Bozia pieczętuje. Herbata parzy się sama.</span></li>
-        <li><strong>Własne kredo</strong><span class="muted sm"> Każdy należący posiada własne kredo.</span></li>
-        <li><strong>Nie hurtem</strong><span class="muted sm"> Kolejna osoba puka, gdy próg kiwnie.</span></li>
-      </ol>
-    </section>
-
     <footer>
-      <p>Członkostwo: 10 Twoich pieniążków. Źródło: <a href="https://github.com/t9g2cff5sh-collab/durnobartosizjanizm">github.com/t9g2cff5sh-collab/durnobartosizjanizm</a></p>
+      Adres zapasowy zostaje na GitHub Pages. Ten plik jest tablicą własną: cztery rejestry, zero pieniążków, domena poza schematem dopóki nie ma paragonu.
     </footer>
   </div>
 </body>
