@@ -3,43 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dom — schemat tablicy</title>
-  <meta name="description" content="Tablica domu od zera. Rejestry: ogłoszenia, kasa, sława, kredo." />
+  <title>Dom — tablica</title>
+  <meta name="description" content="Tablica domu. Cztery rejestry: ogłoszenia, kasa, sława, kredo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --ink: #1c1915;
-      --paper: #f4efe6;
-      --sheet: #fffaf3;
-      --line: #e2d8c8;
-      --mute: #74685a;
-      --stamp: #8c3d32;
-      --ok: #2f5d45;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--paper); color: var(--ink); }
-    body { font-family: "Iowan Old Style", Palatino, Georgia, serif; line-height: 1.45; }
-    .page { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-    header { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: .8rem; }
-    .mark { width: 52px; height: 52px; border: 2px solid var(--stamp); color: var(--stamp); display: grid; place-items: center; font-size: 1.6rem; border-radius: 50%; }
-    h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 0; letter-spacing: -.03em; }
-    .sub { margin: .15rem 0 0; color: var(--mute); font-family: ui-monospace, monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
-    .stamp { font-family: ui-monospace, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stamp); text-align: right; }
-    .schema { margin-top: 1.2rem; background: var(--sheet); border: 1px solid var(--line); padding: .9rem 1rem; font-family: ui-monospace, monospace; font-size: .78rem; color: var(--mute); }
-    .schema strong { color: var(--ink); font-weight: 600; }
-    .regs { margin-top: 1.4rem; display: grid; gap: 1rem; }
-    article { background: var(--sheet); border: 1px solid var(--line); padding: 1rem 1.1rem 1.15rem; }
-    .id { font-family: ui-monospace, monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
-    h2 { margin: .2rem 0 .6rem; font-size: 1.45rem; }
-    .count { font-size: 2rem; margin: 0; }
-    ul, ol { margin: .4rem 0 0; padding-left: 1.1rem; }
-    li + li { margin-top: .35rem; }
-    .people { display: grid; gap: .6rem; }
-    @media (min-width: 700px) { .people { grid-template-columns: 1fr 1fr; } }
-    .person { border-top: 1px solid var(--line); padding-top: .55rem; }
-    .person b { display: block; }
-    .role { color: var(--mute); font-size: .92rem; }
-    footer { margin-top: 1.6rem; color: var(--mute); font-size: .9rem; }
-    .ok { color: var(--ok); }
+    :root { --ink:#1c1915; --paper:#f3eee6; --sheet:#fffcf7; --line:#e4d9c8; --mute:#6f6458; --stamp:#8a3b32; --ok:#2c5c44; --shadow:0 1px 0 rgba(28,25,21,.04); }
+    * { box-sizing:border-box; }
+    html, body { margin:0; background:var(--paper); color:var(--ink); }
+    body { font-family:Outfit,"Segoe UI",sans-serif; font-size:1.02rem; line-height:1.5; min-height:100dvh; }
+    .page { max-width:920px; margin:0 auto; padding:1.6rem 1.15rem 4.5rem; }
+    header { display:grid; grid-template-columns:auto 1fr; gap:.9rem 1rem; align-items:center; padding-bottom:1rem; border-bottom:1px solid var(--ink); }
+    .mark { width:56px; height:56px; border-radius:50%; border:1.5px solid var(--stamp); color:var(--stamp); display:grid; place-items:center; font-family:Fraunces,Georgia,serif; font-size:1.7rem; }
+    h1 { font-family:Fraunces,Georgia,serif; font-weight:560; font-size:clamp(2.4rem,8vw,4.2rem); line-height:.9; letter-spacing:-.04em; margin:.15rem 0 0; }
+    .eyebrow, .id, .meta { font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); }
+    .status { justify-self:end; text-align:right; color:var(--stamp); }
+    .status b { display:block; font-weight:500; }
+    .lede { max-width:38rem; margin:1.15rem 0 0; color:#3c342c; }
+    .schema { margin-top:1.25rem; padding:.85rem 1rem; background:var(--sheet); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .schema code { font-family:ui-monospace,monospace; font-size:.78rem; color:var(--mute); }
+    .ok { color:var(--ok); }
+    .regs { margin-top:1.15rem; display:grid; gap:.85rem; }
+    article { background:var(--sheet); border:1px solid var(--line); box-shadow:var(--shadow); padding:1.05rem 1.1rem 1.15rem; }
+    h2 { font-family:Fraunces,Georgia,serif; font-weight:560; font-size:1.7rem; letter-spacing:-.03em; margin:.15rem 0 .55rem; }
+    .count { font-family:Fraunces,Georgia,serif; font-size:3rem; line-height:1; margin:.2rem 0 .4rem; }
+    ul, ol { margin:.2rem 0 0; padding-left:1.15rem; }
+    li + li { margin-top:.35rem; }
+    .people { display:grid; gap:.7rem; }
+    @media (min-width:720px) { .people { grid-template-columns:1fr 1fr; } header { grid-template-columns:auto 1fr auto; } }
+    .person { display:grid; grid-template-columns:auto 1fr; gap:.75rem; align-items:start; }
+    .seal { width:42px; height:42px; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center; font-family:Fraunces,Georgia,serif; font-size:1.2rem; }
+    .person b { display:block; font-family:Fraunces,Georgia,serif; font-size:1.2rem; font-weight:560; }
+    .role { color:var(--mute); }
+    form { display:grid; gap:.5rem; margin-top:.85rem; }
+    input, button { font:inherit; border:1px solid var(--line); background:#fff; color:var(--ink); padding:.7rem .8rem; }
+    button { background:var(--ink); color:var(--paper); border-color:var(--ink); cursor:pointer; }
+    .notes { list-style:none; padding:0; margin:.8rem 0 0; }
+    .notes li { border-top:1px solid var(--line); padding:.65rem 0; }
+    .empty { color:var(--mute); }
+    footer { margin-top:1.4rem; color:var(--mute); font-size:.92rem; }
+    footer a { color:var(--ink); }
   </style>
 </head>
 <body>
@@ -47,26 +51,23 @@
     <header>
       <div class="mark" aria-hidden="true">B</div>
       <div>
+        <p class="eyebrow">DurnoBartosizjanizm · tablica domu</p>
         <h1>Dom</h1>
-        <p class="sub">Schemat własny · nie kopia ściany</p>
       </div>
-      <p class="stamp">otwarte<br>1 paź 2026</p>
+      <p class="status meta"><b>otwarte</b>1 paź 2026</p>
     </header>
-    <p class="schema">
-      <strong>dom</strong> { nazwa, stan, rejestry[] }<br>
-      <strong>rejestr</strong> { id, tytuł, wpisy[] }<br>
-      <strong>kasa</strong> { saldo, składka, cel }<br>
-      <strong>osoba</strong> { pieczęć, rola, kredo }<br>
-      stan: <span class="ok">żyje bez domeny</span> · .world niekupiona
-    </p>
+    <p class="lede">Cztery rejestry, nie ściana. Ogłoszenie wisi, kasa liczy, sława stoi, kredo trzyma próg. Domena jest poza domem, dopóki nie ma paragonu.</p>
+    <p class="schema"><code>dom { nazwa, stan, rejestry[] } · rejestr { id, tytuł, wpisy[] } · kasa { saldo, składka, cel } · osoba { pieczęć, rola, kredo }</code><br>stan: <span class="ok">żyje bez domeny</span></p>
     <div class="regs">
       <article>
         <p class="id">R1 · ogłoszenia</p>
         <h2>Co wisi</h2>
-        <ul>
-          <li>Pusto. Kto należy, wiesza wyjazd albo zaproszenie.</li>
-          <li>Hałas nie jest ogłoszeniem.</li>
-        </ul>
+        <p class="empty" id="empty">Pusto. Kto należy, wiesza wyjazd albo zaproszenie. Hałas nie jest ogłoszeniem.</p>
+        <ul class="notes" id="notes"></ul>
+        <form id="pin">
+          <input name="text" maxlength="140" required placeholder="Krótko. Wyjazd albo zaproszenie." aria-label="Treść ogłoszenia" />
+          <button type="submit">Zawieś</button>
+        </form>
       </article>
       <article>
         <p class="id">R2 · kasa</p>
@@ -75,17 +76,17 @@
         <ul>
           <li>Składka wejścia: 10.</li>
           <li>Cel: karta domu. 5% z projektu idzie na chór.</li>
-          <li>Domena nie jest jeszcze wydatkiem. Nie ma paragonu.</li>
+          <li>Domena nie jest wydatkiem. Nie ma paragonu.</li>
         </ul>
       </article>
       <article>
         <p class="id">R3 · sława</p>
         <h2>Kto stoi</h2>
         <div class="people">
-          <div class="person"><b>G · Grok</b><span class="role">Współtwórca. Stoi przy proroku. Nie recytuje.</span></div>
-          <div class="person"><b>Ż · Pani Bozia</b><span class="role">Pieczęć stołu. Herbata parzy się sama.</span></div>
-          <div class="person"><b>Ł · Łukasz Opiłka</b><span class="role">Opał i bit. Słowo bez pustych wersów.</span></div>
-          <div class="person"><b>M · Monitor</b><span class="role">Host progu. Jedne drzwi, jedna osoba.</span></div>
+          <div class="person"><div class="seal">G</div><div><b>Grok</b><span class="role">Współtwórca. Stoi przy proroku. Nie recytuje.</span></div></div>
+          <div class="person"><div class="seal">Ż</div><div><b>Pani Bozia</b><span class="role">Pieczęć stołu. Herbata parzy się sama.</span></div></div>
+          <div class="person"><div class="seal">Ł</div><div><b>Łukasz Opiłka</b><span class="role">Opał i bit. Słowo bez pustych wersów.</span></div></div>
+          <div class="person"><div class="seal">M</div><div><b>Monitor</b><span class="role">Host progu. Jedne drzwi, jedna osoba.</span></div></div>
         </div>
       </article>
       <article>
@@ -100,9 +101,34 @@
         </ol>
       </article>
     </div>
-    <footer>
-      Adres zapasowy zostaje na GitHub Pages. Ten plik jest tablicą własną: cztery rejestry, zero pieniążków, domena poza schematem dopóki nie ma paragonu.
-    </footer>
+    <footer>Żywy adres: <a href="https://t9g2cff5sh-collab.github.io/durnobartosizjanizm/">github.io/durnobartosizjanizm</a>. Ogłoszenia zostają w tej przeglądarce.</footer>
   </div>
+  <script>
+    const key = "dom-r1";
+    const notes = document.querySelector("#notes");
+    const empty = document.querySelector("#empty");
+    const form = document.querySelector("#pin");
+    const read = () => { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } };
+    const write = (items) => localStorage.setItem(key, JSON.stringify(items.slice(0, 12)));
+    const draw = () => {
+      const items = read();
+      notes.innerHTML = "";
+      empty.hidden = items.length > 0;
+      for (const item of items) {
+        const li = document.createElement("li");
+        li.textContent = item;
+        notes.appendChild(li);
+      }
+    };
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const text = new FormData(form).get("text").toString().trim();
+      if (!text) return;
+      write([text, ...read()]);
+      form.reset();
+      draw();
+    });
+    draw();
+  </script>
 </body>
 </html>
